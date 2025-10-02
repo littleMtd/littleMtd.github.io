@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>偏鄉教育差距系統</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    gap: 24px;
+  }
+
+  .title-card {
+    background: rgba(255,255,255,0.06);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .title-card.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .title-card h1 {
+    font-size: 36px;
+    color: #ffdf00;
+    margin-bottom: 12px;
+  }
+
+  .title-card p {
+    font-size: 18px;
+    color: #ccc;
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="title-card" id="titleCard">
+    <h1>肚子很二｜偏鄉教育差距系統</h1>
+    <p>第 2 組｜組員：1,2,3</p>
+  </div>
+</main>
+
+<nav class="navbar">
+  <ul>
+    <li><a href="index.html" class="active">🏠</a></li>
+    <li><a href="data.html">📊</a></li>
+    <li><a href="map.html">🗺️</a></li>
+  </ul>
+</nav>
+
+<script>
+  // 標題浮現動畫
+  window.addEventListener('DOMContentLoaded', () => {
+    const card = document.getElementById('titleCard');
+    setTimeout(() => {
+      card.classList.add('show');
+    }, 200); // 延遲 0.2 秒浮現
+  });
+</script>
+</body>
+</html>

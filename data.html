@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育差距 Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<main class="dashboard-container">
+  <!-- 左側字卡區 -->
+  <div class="dashboard-left">
+    <button class="active" data-type="teacherStudent">🏫 師生比</button>
+    <button data-type="internet">💻 網路覆蓋率</button>
+    <button data-type="graduation">🎓 升學率</button>
+  </div>
+
+  <!-- 右側圖表區 -->
+  <div class="dashboard-right">
+    <canvas id="pieChart"></canvas>
+  </div>
+</main>
+
+<!-- 下方導航列 -->
+<nav class="navbar">
+  <ul>
+    <li><a href="index.html">🏠</a></li>
+    <li><a href="data.html" class="active">📊</a></li>
+    <li><a href="map.html">🗺️</a></li>
+  </ul>
+</nav>
+
+<script>
+  // 假數據
+  const chartData = {
+    teacherStudent: {
+      labels: ["都市 1:18", "偏鄉 1:35"],
+      data: [18, 35]
+    },
+    internet: {
+      labels: ["都市 95%", "偏鄉 40%"],
+      data: [95, 40]
+    },
+    graduation: {
+      labels: ["都市 88%", "偏鄉 55%"],
+      data: [88, 55]
+    }
+  };
+
+  const ctx = document.getElementById('pieChart').getContext('2d');
+
+  let pieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: chartData.teacherStudent.labels,
+      datasets: [{
+        data: chartData.teacherStudent.data,
+        backgroundColor: ['#ffdf00', '#353535']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#fff'
+          }
+        }
+      }
+    }
+  });
+
+  // 左側字卡切換數據
+  const buttons = document.querySelectorAll('.dashboard-left button');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+  
+      const type = btn.getAttribute('data-type');
+      pieChart.data.labels = chartData[type].labels;
+      pieChart.data.datasets[0].data = chartData[type].data;
+      pieChart.update();
+    });
+  });
+</script>
+
+</body>
+</html>

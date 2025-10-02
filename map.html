@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>互動地圖 - 偏鄉教育資源</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<main class="map-main">
+  <!-- 左側資訊卡片 -->
+  <section class="card" id="infoCard">
+    <h2>互動地圖</h2>
+    <p>請點擊地圖上的區域查看教育資源</p>
+    <div id="dataPanel"></div>
+  </section>
+
+  <!-- 右側地圖 -->
+  <section class="map-container" id="mapContainer">
+    <img src="images/taiwan-map.png" alt="台灣地圖">
+  </section>
+</main>
+
+<!-- 導覽列 -->
+<nav class="navbar">
+  <ul>
+    <li><a href="index.html">🏠</a></li>
+    <li><a href="data.html">📊</a></li>
+    <li><a href="map.html" class="active">🗺️</a></li>
+  </ul>
+</nav>
+<script>
+const areaData = {
+    "偏鄉": { pos: { top: "60%", left: "30%" }, data: { "網路覆蓋率": 40, "升學率": 55, "師生比": "1:35" } },
+    "都市": { pos: { top: "25%", left: "65%" }, data: { "網路覆蓋率": 95, "升學率": 88, "師生比": "1:18" } }
+  };
+  
+  window.addEventListener('DOMContentLoaded', () => {
+    const infoCard = document.getElementById('infoCard');
+    const dataPanel = document.getElementById('dataPanel');
+    const mapContainer = document.getElementById('mapContainer');
+  
+    setTimeout(() => infoCard.classList.add('show'), 200);
+  
+    for (const area in areaData) {
+      const btn = document.createElement('button');
+      btn.classList.add('area-btn');
+      btn.style.top = areaData[area].pos.top;
+      btn.style.left = areaData[area].pos.left;
+      btn.dataset.name = area;
+      mapContainer.appendChild(btn);
+  
+      // 用於簡單微調按鈕位置 (暫時開發用)
+      btn.addEventListener('mouseenter', () => {
+        console.log(`${area} 初始位置: top=${areaData[area].pos.top}, left=${areaData[area].pos.left}`);
+      });
+  
+      btn.addEventListener('click', () => {
+        const isActive = btn.classList.contains('active');
+        document.querySelectorAll('.area-btn').forEach(b => b.classList.remove('active'));
+  
+        if (!isActive) {
+          btn.classList.add('active');
+          const info = areaData[area].data;
+          let html = `<strong>${area}</strong>`;
+          for (const key in info) {
+            const val = info[key];
+            if (key === "師生比") {
+              const ratio = parseInt(val.split(':')[1]);
+              html += `<p>${key}: ${val}</p>
+                       <div class="bar"><span style="width:${Math.min(ratio*2,100)}%"></span></div>`;
+            } else if (typeof val === "number") {
+              html += `<p>${key}</p>
+                       <div class="bar"><span style="width:${val}%">${val}%</span></div>`;
+            } else {
+              html += `<p>${key}: ${val}</p>`;
+            }
+          }
+          dataPanel.innerHTML = html;
+        } else {
+          dataPanel.innerHTML = '';
+        }
+      });
+    }
+  });
+</script>
+</body>
+</html>
