@@ -211,22 +211,47 @@ main.map-main {
   main.dashboard-container {
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 16px;
+    padding: 12px; /* 減少內距 */
   }
+
   .dashboard-left {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    gap: 12px;
+    gap: 8px; /* 縮小按鈕間距 */
   }
+
   .dashboard-left button {
-    width: 120px;
-    padding: 12px;
-    font-size: 14px;
+    width: 100px; /* 按鈕縮小 */
+    padding: 8px;
+    font-size: 12px;
   }
+
   .dashboard-right {
-    max-width: 300px;
+    max-width: 260px; /* 圖表縮小 */
+  }
+
+  .map-container {
+    max-width: 100%;   /* 地圖自適應 */
+    height: auto;      /* 高度自動 */
+  }
+
+  .map-container img {
+    border-radius: 6px;
+  }
+
+  .card {
+    max-width: 90%; /* 卡片不要太寬 */
+    padding: 12px;
+  }
+
+  .card h2 {
+    font-size: 18px;
+  }
+
+  .card p {
+    font-size: 14px;
   }
 }
