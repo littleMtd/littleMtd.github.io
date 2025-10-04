@@ -3,89 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>教育差距 Dashboard</title>
+<title>高中教育資源比較</title>
 <link rel="stylesheet" href="css/style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    color: #FFD700; /* 全部文字淡金色 */
+    background-color: #1e1e1e; /* 可選深色背景讓金色更突出 */
+  }
+  .chart-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 40px auto;
+  }
+  h2 {
+    text-align: center;
+    color: #FFD700; /* 標題淡金色 */
+  }
+  .navbar ul li a {
+    color: #FFD700; /* 導覽列文字淡金色 */
+  }
+</style>
 </head>
 <body>
 
-<main class="dashboard-container">
-  <!-- 左側字卡區 -->
-  <div class="dashboard-left">
-    <button class="active" data-type="teacherStudent">🏫 師生比</button>
-    <button data-type="internet">💻 網路覆蓋率</button>
-    <button data-type="graduation">🎓 升學率</button>
-  </div>
-
-  <!-- 右側圖表區 -->
-  <div class="dashboard-right">
-    <canvas id="pieChart"></canvas>
+<main>
+  <h2>高中教育資源比較：偏鄉 vs 都市</h2>
+  <div class="chart-container">
+    <canvas id="highSchoolChart"></canvas>
   </div>
 </main>
 
-<!-- 下方導航列 -->
 <nav class="navbar">
   <ul>
     <li><a href="index.html">🏠</a></li>
+    <li><a href="about.html">🎯</a></li>
     <li><a href="data.html" class="active">📊</a></li>
     <li><a href="map.html">🗺️</a></li>
+    <li><a href="feedback.html">💬</a></li>
   </ul>
 </nav>
 
 <script>
-  // 假數據
-  const chartData = {
-    teacherStudent: {
-      labels: ["都市 1:18", "偏鄉 1:35"],
-      data: [18, 35]
+const highSchools = [
+  { name: "偏鄉高中", teacher: 28, internet: 60, graduation: 70 },
+  { name: "都市高中", teacher: 16, internet: 98, graduation: 92 }
+];
+
+const ctx = document.getElementById('highSchoolChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['師生比 (1:n)', '網路覆蓋率 (%)', '畢業人數 (%)'],
+    datasets: highSchools.map((school, idx) => ({
+      label: school.name,
+      data: [school.teacher, school.internet, school.graduation],
+      borderColor: idx === 0 ? '#FF4136' : '#1E90FF',
+      backgroundColor: 'rgba(0,0,0,0)',
+      tension: 0.4,
+      fill: false,
+      pointRadius: 6
+    }))
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: '#FFD700' } }, // 圖例文字淡金色
+      tooltip: { titleColor: '#FFD700', bodyColor: '#FFD700' } // 提示文字淡金色
     },
-    internet: {
-      labels: ["都市 95%", "偏鄉 40%"],
-      data: [95, 40]
-    },
-    graduation: {
-      labels: ["都市 88%", "偏鄉 55%"],
-      data: [88, 55]
+    scales: {
+      y: { beginAtZero: true, max: 100, ticks: { color: '#FFD700' } },
+      x: { ticks: { color: '#FFD700' } }
     }
-  };
-
-  const ctx = document.getElementById('pieChart').getContext('2d');
-
-  let pieChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-      labels: chartData.teacherStudent.labels,
-      datasets: [{
-        data: chartData.teacherStudent.data,
-        backgroundColor: ['#ffdf00', '#353535']
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            color: '#fff'
-          }
-        }
-      }
-    }
-  });
-
-  // 左側字卡切換數據
-  const buttons = document.querySelectorAll('.dashboard-left button');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-  
-      const type = btn.getAttribute('data-type');
-      pieChart.data.labels = chartData[type].labels;
-      pieChart.data.datasets[0].data = chartData[type].data;
-      pieChart.update();
-    });
-  });
+  }
+});
 </script>
 
 </body>
