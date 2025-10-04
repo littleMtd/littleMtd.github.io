@@ -1,314 +1,345 @@
 /* ===== 全域樣式 ===== */
 body {
-  margin: 0;
-  padding: 0;
-  font-family: "Noto Sans TC", sans-serif;
-  color: #fff;
-  background: linear-gradient(160deg, #1f1f1f, #2e2e3f, #1c1c2b);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* 背景光暈裝飾 */
-body::before,
-body::after {
-  content: "";
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  filter: blur(180px);
-  opacity: 0.4;
-  z-index: 0;
-}
-body::before { top: -100px; left: -100px; background: rgba(255, 224, 27, 0.6); }
-body::after  { bottom: -100px; right: -100px; background: rgba(80, 170, 255, 0.6); }
-
-/* ===== 主內容容器 ===== */
-main.dashboard-container,
-main.map-main,
-main.feedback-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 50px;
-  padding: 50px;
-  flex-wrap: wrap;
-  max-width: 1000px;
-  margin: 40px auto;
-  background: #2e2e3f;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeIn 0.8s forwards;
-}
-
-@keyframes fadeIn {
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== 卡片樣式 ===== */
-.card,
-.feedback-card {
-  width: 300px;
-  background: #1f1f1f;
-  padding: 20px;
-  color: #fff;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover,
-.feedback-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.6);
-}
-
-.card h2,
-.feedback-card h1 {
-  color: #ffe01b;
-  margin-top: 0;
-  text-align: center;
-}
-
-.card p,
-.feedback-card p {
-  color: #ccc;
-  margin: 6px 0;
-  text-align: center;
-}
-
-/* ===== 表單樣式 ===== */
-.feedback-card form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.feedback-card input,
-.feedback-card textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #555;
-  border-radius: 6px;
-  background: #1f1f2f;
-  color: #fff;
-  box-sizing: border-box;
-}
-
-.feedback-card textarea { min-height: 100px; }
-
-.feedback-card button {
-  padding: 12px;
-  background-color: #ffdf00;
-  color: #222;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-}
-
-.feedback-card button:hover {
-  background-color: #ffe733;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-}
-
-#feedbackResult {
-  margin-top: 20px;
-  font-weight: bold;
-  color: #ffe01b;
-  text-align: center;
-}
-
-/* ===== 進度條 ===== */
-.bar {
-  width: 100%;
-  background: #353535;
-  border-radius: 5px;
-  height: 20px;
-  margin-top: 5px;
-}
-
-.bar span {
-  display: block;
-  height: 100%;
-  width: 0%;
-  border-radius: 5px;
-  text-align: center;
-  line-height: 20px;
-  font-weight: bold;
-  color: #000;
-  background-color: #ffdf00;
-  transition: width 0.5s ease, background 0.3s;
-}
-
-.bar span.city { background-color: #1E90FF; }
-
-/* ===== 地圖容器 & 地圖點 ===== */
-.map-container {
-  position: relative;
-  flex: 1;
-  max-width: 800px;
-  height: 600px;
-}
-
-.map-container img {
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-}
-
-.area-btn {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
-}
-
-.area-btn.rural { background: #FF4136; }
-.area-btn.city  { background: #1E90FF; }
-
-.area-btn.active { transform: translate(-50%, -50%) scale(1.2); }
-.area-btn.active-click { transform: translate(-50%, -50%) scale(1.4); box-shadow: 0 0 16px rgba(255,255,0,0.8); }
-
-.area-btn:hover { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 12px rgba(255,255,255,0.5); }
-
-/* ===== 按鈕 ===== */
-#compareBtn {
-  margin-top: 10px;
-  padding: 8px 15px;
-  background: #ffdf00;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-#compareBtn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-}
-
-/* ===== 導覽列 ===== */
-.navbar {
-  background: #222;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.navbar ul {
-  display: flex;
-  margin: 0;
-  padding: 10px;
-  list-style: none;
-  justify-content: center;
-}
-
-.navbar li a {
-  color: #fff;
-  text-decoration: none;
-  padding: 8px 16px;
-  display: block;
-  border-radius: 6px;
-  transition: background 0.3s, color 0.3s;
-}
-
-.navbar a.active,
-.navbar li a:hover { background: #444; color: #ffe01b; }
-
-/* ===== 響應式 ===== */
-@media (max-width: 768px) {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans TC", sans-serif;
+    color: #fff;
+    background: linear-gradient(160deg, #1f1f1f, #2e2e3f, #1c1c2b);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* 背景光暈裝飾 */
+  body::before,
+  body::after {
+    content: "";
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(180px);
+    opacity: 0.4;
+    z-index: 0;
+  }
+  body::before { top: -100px; left: -100px; background: rgba(255, 224, 27, 0.6); }
+  body::after  { bottom: -100px; right: -100px; background: rgba(80, 170, 255, 0.6); }
+  
+  /* ===== 首頁 main ===== */
+  main.home-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 垂直置中 */
+    align-items: center;
+    min-height: calc(100vh - 60px); /* 扣掉導覽列高度 */
+    gap: 24px;
+    padding: 20px;
+  }
+  
+  /* 首頁標題卡片 */
+  .title-card {
+    background: rgba(255,255,255,0.06);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .title-card.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .title-card h1 {
+    font-size: 36px;
+    color: #ffdf00;
+    margin-bottom: 12px;
+  }
+  .title-card p {
+    font-size: 18px;
+    color: #ccc;
+  }
+  
+  /* ===== 其他頁面 main ===== */
   main.dashboard-container,
   main.map-main,
   main.feedback-card {
-    width: 100%;
-    max-width: 100%;
-    padding: 16px;
-    gap: 16px;
+    flex: 1;
+    display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    gap: 40px;
+    padding: 40px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 40px auto;
+    background: #2e2e3f;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s forwards;
   }
-
-  .card {
-    width: 100%;
-    max-width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
+  
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
   }
-
-  .map-container {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
+  
+  /* ===== 卡片樣式 ===== */
+  .card,
+  .feedback-card {
+    width: 300px;
+    background: #1f1f1f;
+    padding: 20px;
+    color: #fff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-
-  .map-container img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
+  
+  .card:hover,
+  .feedback-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.6);
   }
-
-  .area-btn {
-    width: 20px;
-    height: 20px;
-  }
-
-  #compareBtn,
-  .feedback-card button {
-    width: 100%;
-    padding: 12px;
-  }
-
-  .bar {
-    height: 16px;
-  }
-  .bar span {
-    font-size: 10px;
-    line-height: 16px;
-  }
-
+  
   .card h2,
   .feedback-card h1 {
-    font-size: 18px;
+    color: #ffe01b;
+    margin-top: 0;
+    text-align: center;
   }
-
+  
   .card p,
   .feedback-card p {
-    font-size: 14px;
+    color: #ccc;
+    margin: 6px 0;
+    text-align: center;
   }
-}
-
-@media (max-width: 480px) {
-  main.dashboard-container,
-  main.map-main,
-  main.feedback-card {
-    padding: 12px;
-    gap: 12px;
+  
+  /* ===== 表單 ===== */
+  .feedback-card form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
   }
-
-  .card, .feedback-card {
+  .feedback-card input,
+  .feedback-card textarea {
+    width: 100%;
     padding: 10px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background: #1f1f2f;
+    color: #fff;
+    box-sizing: border-box;
   }
-
-  .map-container { height: auto; }
-  .bar { height: 14px; }
-  .bar span { font-size: 9px; line-height: 14px; }
-}
+  .feedback-card textarea { min-height: 100px; }
+  .feedback-card button {
+    padding: 12px;
+    background-color: #ffdf00;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .feedback-card button:hover {
+    background-color: #ffe733;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+  }
+  
+  #feedbackResult {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #ffe01b;
+    text-align: center;
+  }
+  
+  /* ===== 進度條 ===== */
+  .bar {
+    width: 100%;
+    background: #353535;
+    border-radius: 5px;
+    height: 20px;
+    margin-top: 5px;
+  }
+  .bar span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+    color: #000;
+    background-color: #ffdf00;
+    transition: width 0.5s ease, background 0.3s;
+  }
+  .bar span.city { background-color: #1E90FF; }
+  
+  /* ===== 地圖容器 ===== */
+  .map-container {
+    position: relative;
+    flex: 1;
+    max-width: 800px;
+    height: 600px;
+  }
+  .map-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+  }
+  
+  /* 地圖點 */
+  .area-btn {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+  }
+  .area-btn.rural { background: #FF4136; }
+  .area-btn.city  { background: #1E90FF; }
+  .area-btn.active { transform: translate(-50%, -50%) scale(1.2); }
+  .area-btn.active-click { transform: translate(-50%, -50%) scale(1.4); box-shadow: 0 0 16px rgba(255,255,0,0.8); }
+  .area-btn:hover { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 12px rgba(255,255,255,0.5); }
+  
+  /* 按鈕 */
+  #compareBtn {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background: #ffdf00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #compareBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+  }
+  
+  /* ===== 導覽列 ===== */
+  .navbar {
+    background: #222;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  .navbar ul {
+    display: flex;
+    margin: 0;
+    padding: 10px;
+    list-style: none;
+    justify-content: center;
+  }
+  .navbar li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 16px;
+    display: block;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
+  }
+  .navbar a.active,
+  .navbar li a:hover { background: #444; color: #ffe01b; }
+  
+  /* ===== 響應式 ===== */
+  @media (max-width: 768px) {
+    main.dashboard-container,
+    main.map-main,
+    main.feedback-card {
+      width: 100%;
+      max-width: 100%;
+      padding: 16px;
+      gap: 16px;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .card {
+      width: 100%;
+      max-width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+  
+    .map-container {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+  
+    .map-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+  
+    .area-btn {
+      width: 20px;
+      height: 20px;
+    }
+  
+    #compareBtn,
+    .feedback-card button {
+      width: 100%;
+      padding: 12px;
+    }
+  
+    .bar {
+      height: 16px;
+    }
+    .bar span {
+      font-size: 10px;
+      line-height: 16px;
+    }
+  
+    .card h2,
+    .feedback-card h1 {
+      font-size: 18px;
+    }
+  
+    .card p,
+    .feedback-card p {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    main.dashboard-container,
+    main.map-main,
+    main.feedback-card {
+      padding: 12px;
+      gap: 12px;
+    }
+  
+    .card, .feedback-card {
+      padding: 10px;
+    }
+  
+    .map-container { height: auto; }
+    .bar { height: 14px; }
+    .bar span { font-size: 9px; line-height: 14px; }
+  
+    .title-card {
+      padding: 24px;
+    }
+    .title-card h1 { font-size: 28px; }
+    .title-card p { font-size: 14px; }
+  }
+  
