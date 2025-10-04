@@ -9,8 +9,8 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    color: #FFD700; /* 全部文字淡金色 */
-    background-color: #1e1e1e; /* 可選深色背景讓金色更突出 */
+    color: #FFD700;
+    background-color: #1e1e1e;
   }
   .chart-container {
     width: 90%;
@@ -19,10 +19,10 @@
   }
   h2 {
     text-align: center;
-    color: #FFD700; /* 標題淡金色 */
+    color: #FFD700;
   }
   .navbar ul li a {
-    color: #FFD700; /* 導覽列文字淡金色 */
+    color: #FFD700;
   }
 </style>
 </head>
@@ -46,38 +46,45 @@
 </nav>
 
 <script>
-const highSchools = [
-  { name: "偏鄉高中", teacher: 28, internet: 60, graduation: 70 },
-  { name: "都市高中", teacher: 16, internet: 98, graduation: 92 }
-];
+// ✅ 自動讀取 CSV (csv/data.csv)
+async function loadCSV() {
+  const res = await fetch("csv/data.csv");
+  const text = await res.text();
 
-const ctx = document.getElementById('highSchoolChart').getContext('2d');
-new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: ['師生比 (1:n)', '網路覆蓋率 (%)', '畢業人數 (%)'],
-    datasets: highSchools.map((school, idx) => ({
-      label: school.name,
-      data: [school.teacher, school.internet, school.graduation],
-      borderColor: idx === 0 ? '#FF4136' : '#1E90FF',
-      backgroundColor: 'rgba(0,0,0,0)',
-      tension: 0.4,
-      fill: false,
-      pointRadius: 6
-    }))
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: { labels: { color: '#FFD700' } }, // 圖例文字淡金色
-      tooltip: { titleColor: '#FFD700', bodyColor: '#FFD700' } // 提示文字淡金色
-    },
-    scales: {
-      y: { beginAtZero: true, max: 100, ticks: { color: '#FFD700' } },
-      x: { ticks: { color: '#FFD700' } }
+  const rows = text.trim().split("\n").map(r => r.split(","));
+
+  // 第一列：標頭 (例：指標,偏鄉,都市)
+  const headers = rows[0];
+  const labels = rows.slice(1).map(r => r[0]); // X軸 → 指標名稱
+
+  // 建立 dataset（每個地區一條線）
+  const datasets = headers.slice(1).map((area, idx) => ({
+    label: area,
+    data: rows.slice(1).map(r => parseFloat(r[idx + 1]) || 0),
+    borderColor: ["#FF5733", "#1E90FF", "#33FF57", "#FFD700", "#A833FF"][idx % 5],
+    backgroundColor: "transparent",
+    tension: 0.3,
+    pointRadius: 5
+  }));
+
+  new Chart(document.getElementById("highSchoolChart"), {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#FFD700' } },
+        tooltip: { titleColor: '#FFD700', bodyColor: '#FFD700' }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { color: '#FFD700' } },
+        x: { ticks: { color: '#FFD700' } }
+      }
     }
-  }
-});
+  });
+}
+
+loadCSV();
 </script>
 
 </body>
