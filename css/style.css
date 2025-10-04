@@ -258,62 +258,32 @@ body {
   .navbar a.active,
   .navbar li a:hover { background: #444; color: #ffe01b; }
   
-  /* ===== 響應式 ===== */
-  @media (max-width: 992px) {
-    .map-main {
-      flex-direction: column;
-      align-items: stretch;
-    }
+    html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
   
-    .card {
-      width: 100%;
-      margin-bottom: 20px;
-    }
+  .map-main, .map-container, .card {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
   
-    .map-container {
-      width: 100%;
+  /* 📱 手機時導覽列仍維持橫向 */
+  @media (max-width: 600px) {
+    .navbar {
+      flex-direction: row;
     }
   
     .navbar ul {
-      gap: 15px;
-    }
-  }
-  
-  /* 手機（寬度小於 600px） */
-  @media (max-width: 600px) {
-    body {
-      padding: 0;
-      margin: 0;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
     }
   
-    h2 {
-      font-size: 1.5rem;
+    .navbar li {
+      flex: 1;
       text-align: center;
     }
-  
-    .map-main {
-      padding: 10px;
-    }
-  
-    .card {
-      padding: 15px;
-    }
-  
-    .map-container img {
-      width: 100%;
-    }
-  
-    .navbar {
-      flex-direction: column;
-    }
-  
-    .navbar ul {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .area-btn {
-      width: 20px;
-      height: 20px;
-    }
   }
+  
