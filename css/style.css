@@ -235,28 +235,80 @@ main.feedback-card {
 .navbar li a:hover { background: #444; color: #ffe01b; }
 
 /* ===== 響應式 ===== */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   main.dashboard-container,
   main.map-main,
   main.feedback-card {
-    gap: 30px;
-    padding: 30px;
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
   }
-  .map-container { height: 400px; }
-  .area-btn { width: 25px; height: 25px; }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .map-container {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .map-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .area-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  #compareBtn,
+  .feedback-card button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .bar {
+    height: 16px;
+  }
+  .bar span {
+    font-size: 10px;
+    line-height: 16px;
+  }
+
+  .card h2,
+  .feedback-card h1 {
+    font-size: 18px;
+  }
+
+  .card p,
+  .feedback-card p {
+    font-size: 14px;
+  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   main.dashboard-container,
   main.map-main,
   main.feedback-card {
-    gap: 20px;
-    padding: 20px;
+    padding: 12px;
+    gap: 12px;
   }
-  .map-container { height: 300px; }
-  .card, .feedback-card { max-width: 90%; padding: 15px; }
-  .card h2, .feedback-card h1 { font-size: 18px; }
-  .card p, .feedback-card p { font-size: 14px; }
-  .bar { height: 16px; }
-  .bar span { font-size: 10px; line-height: 16px; }
+
+  .card, .feedback-card {
+    padding: 10px;
+  }
+
+  .map-container { height: auto; }
+  .bar { height: 14px; }
+  .bar span { font-size: 9px; line-height: 14px; }
 }
