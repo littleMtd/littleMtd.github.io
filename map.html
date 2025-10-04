@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>整合互動地圖 - 偏鄉教育資源</title>
+<title>互動地圖 - 偏鄉教育資源</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,6 +12,11 @@
   <!-- 左側資訊卡片 -->
   <section class="card" id="infoCard">
     <h2>互動地圖</h2>
+    <label for="countySelect">選擇縣市：</label>
+    <select id="countySelect">
+      <option value="yunlin">雲林縣</option>
+      <option value="taipei">台北市</option>
+    </select>
     <p id="modeText">點擊地圖上的學校查看資料</p>
     <div id="dataPanel"></div>
     <button id="compareBtn">開始比對模式</button>
@@ -19,7 +24,7 @@
 
   <!-- 右側地圖 -->
   <section class="map-container" id="mapContainer">
-    <img src="yunlin-map.jpg" alt="地圖">
+    <!-- JS 動態載入地圖與學校點 -->
   </section>
 </main>
 
@@ -35,142 +40,131 @@
 </nav>
 
 <script>
-const schools = {
-  "A": { type: "rural", name: "偏鄉高中 C", teacher: 28, internet: 60, baseGraduates: 50, pos:{top:"70%", left:"70%"} },
-  "B": { type: "city", name:  "都市高中 D", teacher: 18, internet: 95, baseGraduates: 80, pos:{top:"25%", left:"65%"} }
-};
+  const schools = {
+    yunlin: [
+      { name: "財團法人義峰高中", county: "雲林縣", teacher: 74, student: 543, graduates: 216, pos: { top: "30%", left: "75%" }, type: "rural" },
+      { name: "國立虎尾農工", county: "雲林縣", teacher: 149, student: 1139, graduates: 317, pos: { top: "40%", left: "50%" }, type: "rural" }
+    ],
+    taipei: [
+      { name: "市立建國中學", county: "台北市", teacher: 260, student: 2821, graduates: 892, pos: { top: "65%", left: "35%" }, type: "city" },
+      { name: "市立南港高中", county: "台北市", teacher: 188, student: 1015, graduates: 315, pos: { top: "65%", left: "65%" }, type: "city" }
+    ]
+  };
+  
+  let compareMode = false;
+  let selectedRural = null;
+  let selectedCity = null;
+  
+  const mapContainer = document.getElementById("mapContainer");
+  const dataPanel = document.getElementById("dataPanel");
+  const compareBtn = document.getElementById("compareBtn");
+  const modeText = document.getElementById("modeText");
+  const countySelect = document.getElementById("countySelect");
+  
+  // 載入地圖
+  function renderMap(county) {
+    mapContainer.innerHTML = `<img src="${county}-map.jpg" alt="${county} 地圖">`;
+  
+    schools[county].forEach(school => {
+      const btn = document.createElement("button");
+      btn.classList.add("area-btn", school.type);
+      if (county === "yunlin") btn.classList.add("yunlin-dot");
+      if (county === "taipei") btn.classList.add("taipei-dot");
+  
+      btn.style.top = school.pos.top;
+      btn.style.left = school.pos.left;
+      btn.title = school.name;
+  
+      btn.addEventListener("click", () => {
+        btn.classList.add("active-click");
+        setTimeout(() => btn.classList.remove("active-click"), 300);
+  
+        if (!compareMode) {
+          selectedRural = school.type === "rural" ? school : null;
+          selectedCity = school.type === "city" ? school : null;
+          modeText.textContent = `當前選擇：${school.name}`;
+          displaySchoolData();
+        } else {
+          if (school.type === "rural") {
+            selectedRural = school;
+            modeText.textContent = "請選擇都市學校進行比對";
+          }
+          if (school.type === "city") {
+            selectedCity = school;
+            modeText.textContent = "比對完成";
+          }
+          displaySchoolData();
+        }
+      });
+  
+      mapContainer.appendChild(btn);
+    });
+  }
+  
+  // 顯示資料（含畢業率）
+  function displaySchoolData() {
+    dataPanel.innerHTML = "";
+  
+    function createInfoCard(school, labelClass = "") {
+      const div = document.createElement("div");
+      div.innerHTML = `<h3>${school.name}</h3>`;
+      const dataKeys = {
+        teacher: "老師數量",
+        student: "學生數量",
+        graduates: "畢業生數量"
+      };
+      for (const key in dataKeys) {
+        const val = school[key];
+        div.innerHTML += `
+          <label>${dataKeys[key]}：${val}</label>
+          <div class="progress-bar"><div class="progress-fill ${labelClass}" style="width:${Math.min((val / 1000) * 100, 100)}%"></div></div>
+        `;
+      }
 
-let compareMode = false;
-let selectedRural = null;
-let selectedCity = null;
+      // 🔹 新增畢業率
+      const rate = ((school.graduates / school.student) * 100).toFixed(1);
+      div.innerHTML += `<p class="rate-text">🎓 畢業率：${isNaN(rate) ? "—" : rate + "%"}</p>`;
 
-const mapContainer = document.getElementById("mapContainer");
-const dataPanel = document.getElementById("dataPanel");
-const compareBtn = document.getElementById("compareBtn");
-const modeText = document.getElementById("modeText");
+      return div;
+    }
+  
+    if (selectedRural) dataPanel.appendChild(createInfoCard(selectedRural));
+    if (selectedCity) dataPanel.appendChild(createInfoCard(selectedCity, "city"));
+  }
+  
+  // 比對模式
+  compareBtn.addEventListener("click", () => {
+    compareMode = !compareMode;
+    compareBtn.textContent = compareMode ? "結束比對模式" : "開始比對模式";
+    selectedRural = null;
+    selectedCity = null;
+    dataPanel.innerHTML = "";
+    modeText.textContent = compareMode ? "比對模式啟動：請先選擇偏鄉學校" : "點擊地圖上的學校查看資料";
+  });
+  
+  // 縣市切換（保留比對模式）
+  countySelect.addEventListener("change", (e) => {
+    const county = e.target.value;
+    dataPanel.innerHTML = "";
 
-// 生成地圖點
-for (const key in schools){
-  const school = schools[key];
-  const btn = document.createElement("button");
-  btn.classList.add("area-btn");
-  btn.classList.add(school.type);
-  btn.style.top = school.pos.top;
-  btn.style.left = school.pos.left;
-  btn.title = school.name;
-  mapContainer.appendChild(btn);
-
-  btn.addEventListener("click", () => {
-    btn.classList.add("active-click");
-    setTimeout(() => btn.classList.remove("active-click"), 300);
-
-    if (!compareMode){
-      selectedRural = school.type==="rural" ? school : null;
-      selectedCity = school.type==="city" ? school : null;
-      modeText.textContent = `當前選擇：${school.name}`;
-      displaySchoolData();
+    if (compareMode) {
+      renderMap(county);
+      if (!selectedRural && county === "yunlin") {
+        modeText.textContent = "比對模式啟動中：請選擇偏鄉學校";
+      } else if (!selectedCity && county === "taipei") {
+        modeText.textContent = "比對模式啟動中：請選擇都市學校";
+      } else {
+        modeText.textContent = "比對模式：可繼續選擇另一縣市學校";
+      }
     } else {
-      if(school.type==="rural") {
-        selectedRural = school;
-        modeText.textContent = "請選擇都市學校進行比對";
-      }
-      if(school.type==="city") {
-        selectedCity = school;
-        modeText.textContent = "比對完成";
-      }
-      displaySchoolData();
+      selectedRural = null;
+      selectedCity = null;
+      modeText.textContent = "點擊地圖上的學校查看資料";
+      renderMap(county);
     }
   });
-}
-
-// 比對模式按鈕
-compareBtn.addEventListener("click", () => {
-  compareMode = !compareMode;
-  compareBtn.textContent = compareMode ? "結束比對模式" : "開始比對模式";
-  selectedRural = null;
-  selectedCity = null;
-  dataPanel.innerHTML = "";
-  modeText.textContent = compareMode ? "比對模式啟動：請先選擇偏鄉學校" : "點擊地圖上的學校查看資料";
-});
-
-// 顯示資料面板
-function displaySchoolData(){
-  dataPanel.innerHTML = "";
-
-  function calculateGraduates(base, teacherValue, internetValue){
-    // 師生比加成（理想師生比 18）
-    const idealTeacher = 18;
-    const alpha = 0.3; // 師生比影響係數
-    let teacherFactor = 1 - Math.min(Math.max((teacherValue - idealTeacher)/idealTeacher * alpha, -0.3), 0.3);
-
-    // 網路覆蓋率加成
-    const baseInternet = 60; // 基準網路覆蓋率
-    const beta = 0.25;
-    let internetFactor = 1 + (internetValue - baseInternet)/100 * beta;
-
-    let graduates = base * teacherFactor * internetFactor;
-    return Math.round(graduates);
-  }
-
-  // 偏鄉學校
-  if(selectedRural){
-    const div = document.createElement("div");
-    div.innerHTML = `<h3>${selectedRural.name}</h3>
-      <label>師生比</label>
-      <input type="range" min="10" max="50" value="${selectedRural.teacher}" id="teacherInput">
-      <div class="progress-bar"><div class="progress-fill" id="teacherBar"></div></div>
-      <p id="teacherText">目前模擬值：1:${selectedRural.teacher}</p>
-      <label>網路覆蓋率</label>
-      <input type="range" min="30" max="95" value="${selectedRural.internet}" id="internetInput">
-      <div class="progress-bar"><div class="progress-fill" id="internetBar"></div></div>
-      <p id="internetText">目前模擬值：${selectedRural.internet}%</p>
-      <label>畢業人數</label>
-      <div class="progress-bar"><div class="progress-fill" id="graduationBar"></div></div>
-      <p id="graduationText">目前模擬值：${selectedRural.baseGraduates}</p>`;
-    dataPanel.appendChild(div);
-
-    const teacherInput = document.getElementById("teacherInput");
-    const internetInput = document.getElementById("internetInput");
-    const teacherBar = document.getElementById("teacherBar");
-    const internetBar = document.getElementById("internetBar");
-    const graduationBar = document.getElementById("graduationBar");
-    const teacherText = document.getElementById("teacherText");
-    const internetText = document.getElementById("internetText");
-    const graduationText = document.getElementById("graduationText");
-
-    function updateBars(){
-      const teacherValue = parseInt(teacherInput.value);
-      const internetValue = parseInt(internetInput.value);
-
-      teacherBar.style.width = (teacherValue/50*100)+"%";
-      teacherText.textContent = "目前模擬值：1:"+teacherValue;
-
-      internetBar.style.width = internetValue+"%";
-      internetText.textContent = "目前模擬值："+internetValue+"%";
-
-      const graduates = calculateGraduates(selectedRural.baseGraduates, teacherValue, internetValue);
-      graduationBar.style.width = Math.min(graduates/selectedRural.baseGraduates*100, 100)+"%";
-      graduationText.textContent = "目前模擬值："+graduates+" 人";
-    }
-
-    teacherInput.addEventListener("input", updateBars);
-    internetInput.addEventListener("input", updateBars);
-    updateBars();
-  }
-
-  // 都市學校
-  if(selectedCity){
-    const div = document.createElement("div");
-    div.innerHTML = `<h3>${selectedCity.name}</h3>
-      <label>師生比：${selectedCity.teacher}</label>
-      <div class="progress-bar"><div class="progress-fill city" style="width:${selectedCity.teacher/50*100}%"></div></div>
-      <label>網路覆蓋率：${selectedCity.internet}%</label>
-      <div class="progress-bar"><div class="progress-fill city" style="width:${selectedCity.internet}%"></div></div>
-      <label>畢業人數：${selectedCity.baseGraduates}</label>
-      <div class="progress-bar"><div class="progress-fill city" style="width:${selectedCity.baseGraduates/selectedCity.baseGraduates*100}%"></div></div>`;
-    dataPanel.appendChild(div);
-  }
-}
+  
+  // 預設載入
 </script>
 
 </body>
