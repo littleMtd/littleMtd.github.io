@@ -90,7 +90,6 @@
     <li><a href="feedback.html">💬</a></li>
   </ul>
 </nav>
-
 <script>
   const schools = {
     yunlin: [
@@ -119,9 +118,6 @@
     schools[county].forEach(school => {
       const btn = document.createElement("button");
       btn.classList.add("area-btn", school.type);
-      if (county === "yunlin") btn.classList.add("yunlin-dot");
-      if (county === "taipei") btn.classList.add("taipei-dot");
-  
       btn.style.top = school.pos.top;
       btn.style.left = school.pos.left;
       btn.title = school.name;
@@ -134,7 +130,7 @@
           selectedRural = school.type === "rural" ? school : null;
           selectedCity = school.type === "city" ? school : null;
           modeText.textContent = `當前選擇：${school.name}`;
-          displaySchoolData();
+          displaySchoolData(county);
         } else {
           if (school.type === "rural") {
             selectedRural = school;
@@ -144,7 +140,7 @@
             selectedCity = school;
             modeText.textContent = "比對完成";
           }
-          displaySchoolData();
+          displaySchoolData(county);
         }
       });
   
@@ -152,48 +148,58 @@
     });
   }
   
-  function displaySchoolData() {
+  function displaySchoolData(county) {
     dataPanel.innerHTML = "";
   
     function createInfoCard(school, labelClass = "") {
       const div = document.createElement("div");
       div.innerHTML = `<h3>${school.name}</h3>`;
   
-      // 顯示老師數量輸入欄
+      // 老師數量輸入欄
       div.innerHTML += `
         <label>老師數量：
           <input type="number" min="1" value="${school.teacher}" id="teacherInput" style="width: 60px; margin-left: 10px;">
         </label>
       `;
   
-      const dataKeys = {
-        student: "學生數量",
-        graduates: "畢業生數量"
-      };
+      const dataKeys = { student: "學生數量", graduates: "畢業生數量" };
+  
       for (const key in dataKeys) {
         const val = school[key];
+        // 計算各欄位最大值，用於進度條比例
+        const maxVal = Math.max(...schools[county].map(s => s[key]));
         div.innerHTML += `
           <label>${dataKeys[key]}：${val}</label>
-          <div class="bar"><span class="${labelClass}" style="width:${Math.min((val / 1000) * 100, 100)}%"></span></div>
+          <div class="bar"><span class="${labelClass}" style="width:${(val / maxVal * 100).toFixed(1)}%"></span></div>
         `;
       }
+  
+      // 師生比
+      const ratio = school.student / school.teacher;
+      div.innerHTML += `
+        <label>師生比：${ratio.toFixed(2)}</label>
+        <div class="bar"><span class="${labelClass}" style="width:${Math.min(ratio*10,100)}%"></span></div>
+      `;
   
       // 畢業率
       function updateGraduationRate() {
         const teacherInput = div.querySelector("#teacherInput");
         let teacherNum = parseInt(teacherInput.value) || school.teacher;
-        // 調整畢業率公式：按老師數比例增減
         let baseRate = school.graduates / school.student;
         let newRate = Math.min(1, baseRate * (teacherNum / school.teacher));
         div.querySelector(".rate-text").textContent = `🎓 畢業率：${(newRate*100).toFixed(1)}%`;
+  
+        // 更新師生比
+        const ratioSpan = div.querySelector(".bar span:last-child");
+        let newRatio = school.student / teacherNum;
+        ratioSpan.style.width = `${Math.min(newRatio*10,100)}%`;
       }
   
       const rate = (school.graduates / school.student) * 100;
       div.innerHTML += `<p class="rate-text">🎓 畢業率：${rate.toFixed(1)}%</p>`;
   
-      // 監聽老師數量輸入變化
-      const teacherInput = div.querySelector("#teacherInput");
-      teacherInput.addEventListener("input", updateGraduationRate);
+      // 監聽老師數量變化
+      div.querySelector("#teacherInput").addEventListener("input", updateGraduationRate);
   
       return div;
     }
@@ -214,7 +220,6 @@
   countySelect.addEventListener("change", (e) => {
     const county = e.target.value;
     dataPanel.innerHTML = "";
-  
     if (compareMode) {
       renderMap(county);
       if (!selectedRural && county === "yunlin") {
@@ -234,7 +239,13 @@
   
   // 預設載入
   renderMap(countySelect.value);
-</script>
+  </script>
+  
+
+
+
+  
+  
 
 
 </body>

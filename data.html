@@ -46,18 +46,15 @@
 </nav>
 
 <script>
-// ✅ 自動讀取 CSV (csv/data.csv)
 async function loadCSV() {
   const res = await fetch("csv/data.csv");
   const text = await res.text();
 
   const rows = text.trim().split("\n").map(r => r.split(","));
 
-  // 第一列：標頭 (例：指標,偏鄉,都市)
   const headers = rows[0];
   const labels = rows.slice(1).map(r => r[0]); // X軸 → 指標名稱
 
-  // 建立 dataset（每個地區一條線）
   const datasets = headers.slice(1).map((area, idx) => ({
     label: area,
     data: rows.slice(1).map(r => parseFloat(r[idx + 1]) || 0),
