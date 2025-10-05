@@ -32,9 +32,9 @@ main.home-main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 垂直置中 */
+    justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 60px); /* 扣掉導覽列高度 */
+    min-height: calc(100vh - 60px);
     gap: 24px;
     padding: 20px;
 }
@@ -163,27 +163,38 @@ main.feedback-card {
     text-align: center;
 }
 
-/* ===== 進度條 ===== */
+/* ===== 進度條（整合 JS 結構） ===== */
 .bar {
     width: 100%;
-    background: #353535;
-    border-radius: 5px;
-    height: 20px;
-    margin-top: 5px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    height: 24px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
 .bar span {
     display: block;
     height: 100%;
-    width: 0%;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 20px;
+    border-radius: 12px;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 24px;
+    color: #fff;
     font-weight: bold;
-    color: #000;
-    background-color: #ffdf00;
-    transition: width 0.5s ease, background 0.3s;
+    transition: width 0.5s ease;
+    background: linear-gradient(90deg, #ff4c4c, #ff1a1a);
 }
-.bar span.city { background-color: #1E90FF; }
+.bar span.city {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+}
+.bar span.student {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+}
+.bar span.graduate {
+    background: linear-gradient(90deg, #28a745, #85e085);
+}
 
 /* ===== 地圖容器 ===== */
 .map-container {
@@ -307,11 +318,11 @@ html, body {
 
 /* ===== 資料比較頁 (data.html) 專用 ===== */
 main.data-main {
-    flex: none; /* 關閉父層 flex 伸展 */
+    flex: none;
     display: block;
     width: 100%;
     max-width: 900px;
-    margin: 80px auto 100px auto; /* 預留上方與底部空間 */
+    margin: 80px auto 100px auto;
     padding: 20px;
     background: rgba(46, 46, 63, 0.8);
     border-radius: 12px;
@@ -329,18 +340,11 @@ main.data-main {
     margin: 0 auto;
 }
 body {
-    padding-bottom: 80px; /* 預留底部空間給 navbar */
+    padding-bottom: 80px;
 }
+
 #dataPanel {
     min-height: 220px;
-    opacity: 0.6; /* 顯示但資料淡化 */
-}
-@media (max-width: 600px) {
-    main.data-main {
-        margin: 60px auto 90px auto;
-        padding: 15px;
-    }
-    .data-main h2 {
-        font-size: 1.1rem;
-    }
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
