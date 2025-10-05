@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>高中教育資源比較</title>
-<link rel="stylesheet" href="css/style.css">
+<link href="css/style.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   body {
@@ -27,62 +28,21 @@
 </style>
 </head>
 <body>
-
 <main>
-  <h2>高中教育資源比較：偏鄉 vs 都市</h2>
-  <div class="chart-container">
-    <canvas id="highSchoolChart"></canvas>
-  </div>
+<h2>高中教育資源比較：偏鄉 vs 都市</h2>
+<div class="chart-container">
+<canvas id="highSchoolChart"></canvas>
+</div>
 </main>
-
 <nav class="navbar">
-  <ul>
-    <li><a href="index.html">🏠</a></li>
-    <li><a href="about.html">🎯</a></li>
-    <li><a href="data.html" class="active">📊</a></li>
-    <li><a href="map.html">🗺️</a></li>
-    <li><a href="feedback.html">💬</a></li>
-  </ul>
+<ul>
+<li><a href="index.html">🏠</a></li>
+<li><a href="about.html">🎯</a></li>
+<li><a class="active" href="data.html">📊</a></li>
+<li><a href="map.html">🗺️</a></li>
+<li><a href="feedback.html">💬</a></li>
+</ul>
 </nav>
 
-<script>
-async function loadCSV() {
-  const res = await fetch("csv/data.csv");
-  const text = await res.text();
-
-  const rows = text.trim().split("\n").map(r => r.split(","));
-
-  const headers = rows[0];
-  const labels = rows.slice(1).map(r => r[0]); // X軸 → 指標名稱
-
-  const datasets = headers.slice(1).map((area, idx) => ({
-    label: area,
-    data: rows.slice(1).map(r => parseFloat(r[idx + 1]) || 0),
-    borderColor: ["#FF5733", "#1E90FF", "#33FF57", "#FFD700", "#A833FF"][idx % 5],
-    backgroundColor: "transparent",
-    tension: 0.3,
-    pointRadius: 5
-  }));
-
-  new Chart(document.getElementById("highSchoolChart"), {
-    type: 'line',
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { labels: { color: '#FFD700' } },
-        tooltip: { titleColor: '#FFD700', bodyColor: '#FFD700' }
-      },
-      scales: {
-        y: { beginAtZero: true, ticks: { color: '#FFD700' } },
-        x: { ticks: { color: '#FFD700' } }
-      }
-    }
-  });
-}
-
-loadCSV();
-</script>
-
-</body>
+<script src="js/data.js"></script></body>
 </html>

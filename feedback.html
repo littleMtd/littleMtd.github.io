@@ -1,47 +1,34 @@
 <!DOCTYPE html>
+
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>意見回饋 - 偏鄉教育資源</title>
-<link rel="stylesheet" href="css/style.css">
+<link href="css/style.css" rel="stylesheet"/>
 </head>
 <body>
-
 <main class="card feedback-card">
-  <h1>意見回饋</h1>
-  <p>我們非常重視您的意見，請填寫以下表單提交建議或回饋。</p>
-
-  <form id="feedbackForm">
-    <input type="email" name="email" placeholder="電子郵件" required>
-    <textarea name="message" placeholder="請輸入您的回饋內容..." required></textarea>
-    <button type="submit">提交回饋</button>
-  </form>
-  <p>網頁製作:陳昱翔</p>
-  <p class="contact-email">聯繫方式:B11423041@live.yuntech.edu.tw</p>
-  <div id="feedbackResult"></div>
+<h1>意見回饋</h1>
+<p>我們非常重視您的意見，請填寫以下表單提交建議或回饋。</p>
+<form id="feedbackForm">
+<input name="email" placeholder="電子郵件" required="" type="email"/>
+<textarea name="message" placeholder="請輸入您的回饋內容..." required=""></textarea>
+<button type="submit">提交回饋</button>
+</form>
+<p>網頁製作:陳昱翔</p>
+<p class="contact-email">聯繫方式:B11423041@live.yuntech.edu.tw</p>
+<div id="feedbackResult"></div>
 </main>
-
 <nav class="navbar">
-  <ul>
-    <li><a href="index.html">🏠</a></li>
-    <li><a href="about.html">🎯</a></li>
-    <li><a href="data.html">📊</a></li>
-    <li><a href="map.html">🗺️</a></li>
-    <li><a href="feedback.html" class="active">💬</a></li>
-  </ul>
+<ul>
+<li><a href="index.html">🏠</a></li>
+<li><a href="about.html">🎯</a></li>
+<li><a href="data.html">📊</a></li>
+<li><a href="map.html">🗺️</a></li>
+<li><a class="active" href="feedback.html">💬</a></li>
+</ul>
 </nav>
 
-<script>
-const form = document.getElementById("feedbackForm");
-const result = document.getElementById("feedbackResult");
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  result.textContent = "感謝您的回饋，我們已收到！";
-  form.reset();
-});
-</script>
-
-</body>
+<script src="js/feedback.js"></script></body>
 </html>
