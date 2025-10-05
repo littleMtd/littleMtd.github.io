@@ -124,25 +124,29 @@ const schools = {
     modeText.textContent = compareMode ? "比對模式啟動：請先選擇偏鄉學校" : "點擊地圖上的學校查看資料";
   });
   
-  countySelect.addEventListener("change", (e) => {
-    const county = e.target.value;
-    dataPanel.innerHTML = "";
-    if (compareMode) {
-      renderMap(county);
-      if (!selectedRural && county === "yunlin") {
-        modeText.textContent = "比對模式啟動中：請選擇偏鄉學校";
-      } else if (!selectedCity && county === "taipei") {
-        modeText.textContent = "比對模式啟動中：請選擇都市學校";
-      } else {
-        modeText.textContent = "比對模式：可繼續選擇另一縣市學校";
-      }
+ countySelect.addEventListener("change", (e) => {
+  const county = e.target.value;
+  dataPanel.innerHTML = "";
+
+  renderMap(county); // 無論比對模式還是單選模式都要重繪地圖
+
+  if (compareMode) {
+    if (!selectedRural && county === "yunlin") {
+      modeText.textContent = "比對模式啟動中：請選擇偏鄉學校";
+    } else if (!selectedCity && county === "taipei") {
+      modeText.textContent = "比對模式啟動中：請選擇都市學校";
     } else {
-      selectedRural = null;
-      selectedCity = null;
-      modeText.textContent = "點擊地圖上的學校查看資料";
-      renderMap(county);
+      modeText.textContent = "比對模式：可繼續選擇另一縣市學校";
     }
-  });
+    // 顯示已選的學校資料
+    displaySchoolData(county);
+  } else {
+    selectedRural = null;
+    selectedCity = null;
+    modeText.textContent = "點擊地圖上的學校查看資料";
+  }
+});
+
   
   // 預設載入
   renderMap(countySelect.value);
