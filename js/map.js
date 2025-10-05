@@ -55,66 +55,64 @@ const schools = {
     });
   }
   
-  function displaySchoolData(county) {
-    const dataPanel = document.getElementById("dataPanel");
-    dataPanel.innerHTML = ""; // 更新內容;
-  
-    function createInfoCard(school, labelClass = "") {
-      const div = document.createElement("div");
-      div.innerHTML = `<h3>${school.name}</h3>`;
-  
-      // 老師數量輸入欄
-      div.innerHTML += `
-        <label>老師數量：
-          <input type="number" min="1" value="${school.teacher}" id="teacherInput" style="width: 60px; margin-left: 10px;">
-        </label>
-      `;
-  
-      const dataKeys = { student: "學生數量", graduates: "畢業生數量" };
-  
-      for (const key in dataKeys) {
-        const val = school[key];
-        // 計算各欄位最大值，用於進度條比例
-        const maxVal = Math.max(...schools[county].map(s => s[key]));
-        div.innerHTML += `
-          <label>${dataKeys[key]}：${val}</label>
-          <div class="bar"><span class="${labelClass}" style="width:${(val / maxVal * 100).toFixed(1)}%"></span></div>
-        `;
-      }
-  
-      // 師生比
-      const ratio = school.student / school.teacher;
-      div.innerHTML += `
-        <label>師生比：${ratio.toFixed(2)}</label>
-        <div class="bar"><span class="${labelClass}" style="width:${Math.min(ratio*10,100)}%"></span></div>
-      `;
-  
-      // 畢業率
-      function updateGraduationRate() {
-        const teacherInput = div.querySelector("#teacherInput");
-        let teacherNum = parseInt(teacherInput.value) || school.teacher;
-        let baseRate = school.graduates / school.student;
-        let newRate = Math.min(1, baseRate * (teacherNum / school.teacher));
-        div.querySelector(".rate-text").textContent = `🎓 畢業率：${(newRate*100).toFixed(1)}%`;
-  
-        // 更新師生比
-        const ratioSpan = div.querySelector(".bar span:last-child");
-        let newRatio = school.student / teacherNum;
-        ratioSpan.style.width = `${Math.min(newRatio*10,100)}%`;
-      }
-  
-      const rate = (school.graduates / school.student) * 100;
-      div.innerHTML += `<p class="rate-text">🎓 畢業率：${rate.toFixed(1)}%</p>`;
-  
-      // 監聽老師數量變化
-      div.querySelector("#teacherInput").addEventListener("input", updateGraduationRate);
-  
-      return div;
-    }
-  
-    if (selectedRural) dataPanel.appendChild(createInfoCard(selectedRural));
-    if (selectedCity) dataPanel.appendChild(createInfoCard(selectedCity, "city"));
+function displaySchoolData(county) {
+  dataPanel.innerHTML = ""; // 清空舊內容
+
+  // 如果沒有選學校，顯示提示文字
+  if (!selectedRural && !selectedCity) {
+    dataPanel.innerHTML = "<h3>請選擇學校</h3>";
+    return;
   }
+
+  function createInfoCard(school, labelClass = "") {
+    const div = document.createElement("div");
+    div.innerHTML = `<h3>${school.name}</h3>`;
+
+    div.innerHTML += `
+      <label>老師數量：
+        <input type="number" min="1" value="${school.teacher}" id="teacherInput" style="width: 60px; margin-left: 10px;">
+      </label>
+    `;
+
+    const dataKeys = { student: "學生數量", graduates: "畢業生數量" };
+    for (const key in dataKeys) {
+      const val = school[key];
+      const maxVal = Math.max(...schools[county].map(s => s[key]));
+      div.innerHTML += `
+        <label>${dataKeys[key]}：${val}</label>
+        <div class="bar"><span class="${labelClass}" style="width:${(val / maxVal * 100).toFixed(1)}%"></span></div>
+      `;
+    }
+
+    const ratio = school.student / school.teacher;
+    div.innerHTML += `
+      <label>師生比：${ratio.toFixed(2)}</label>
+      <div class="bar"><span class="${labelClass}" style="width:${Math.min(ratio*10,100)}%"></span></div>
+    `;
+
+    const rate = (school.graduates / school.student) * 100;
+    div.innerHTML += `<p class="rate-text">🎓 畢業率：${rate.toFixed(1)}%</p>`;
+
+    function updateGraduationRate() {
+      const teacherInput = div.querySelector("#teacherInput");
+      let teacherNum = parseInt(teacherInput.value) || school.teacher;
+      let baseRate = school.graduates / school.student;
+      let newRate = Math.min(1, baseRate * (teacherNum / school.teacher));
+      div.querySelector(".rate-text").textContent = `🎓 畢業率：${(newRate*100).toFixed(1)}%`;
+
+      const ratioSpan = div.querySelector(".bar span:last-child");
+      let newRatio = school.student / teacherNum;
+      ratioSpan.style.width = `${Math.min(newRatio*10,100)}%`;
+    }
+
+    div.querySelector("#teacherInput").addEventListener("input", updateGraduationRate);
+    return div;
+  }
+
+  if (selectedRural) dataPanel.appendChild(createInfoCard(selectedRural));
+  if (selectedCity) dataPanel.appendChild(createInfoCard(selectedCity, "city"));
+}
+
   
   compareBtn.addEventListener("click", () => {
     compareMode = !compareMode;
