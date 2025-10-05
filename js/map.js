@@ -5,7 +5,7 @@ const schools = {
   ],
   taipei: [
     { name: "市立建國中學", county: "台北市", teacher: 260, student: 2821, graduates: 892, pos: { top: "65%", left: "35%" }, type: "city" },
-    { name: "市立南港高中", county: "台北市", teacher: 188, student: 1015, graduates: 315, pos: { top: "65%", left: "65%" }, type: "city" }
+    { name: "市立南港高中", county: "台北市", teacher: 188, student: 1015, graduates: 315, pos: { top: "65%", left: "70%" }, type: "city" }
   ]
 };
 
