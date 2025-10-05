@@ -10,11 +10,11 @@ body {
     flex-direction: column;
     position: relative;
     overflow-x: hidden;
-  }
-  
-  /* 背景光暈裝飾 */
-  body::before,
-  body::after {
+}
+
+/* 背景光暈裝飾 */
+body::before,
+body::after {
     content: "";
     position: absolute;
     width: 400px;
@@ -23,12 +23,12 @@ body {
     filter: blur(180px);
     opacity: 0.4;
     z-index: 0;
-  }
-  body::before { top: -100px; left: -100px; background: rgba(255, 224, 27, 0.6); }
-  body::after  { bottom: -100px; right: -100px; background: rgba(80, 170, 255, 0.6); }
-  
-  /* ===== 首頁 main ===== */
-  main.home-main {
+}
+body::before { top: -100px; left: -100px; background: rgba(255, 224, 27, 0.6); }
+body::after  { bottom: -100px; right: -100px; background: rgba(80, 170, 255, 0.6); }
+
+/* ===== 首頁 main ===== */
+main.home-main {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -37,10 +37,10 @@ body {
     min-height: calc(100vh - 60px); /* 扣掉導覽列高度 */
     gap: 24px;
     padding: 20px;
-  }
-  
-  /* 首頁標題卡片 */
-  .title-card {
+}
+
+/* 首頁標題卡片 */
+.title-card {
     background: rgba(255,255,255,0.06);
     padding: 40px;
     border-radius: 16px;
@@ -49,25 +49,25 @@ body {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 1s ease, transform 1s ease;
-  }
-  .title-card.show {
+}
+.title-card.show {
     opacity: 1;
     transform: translateY(0);
-  }
-  .title-card h1 {
+}
+.title-card h1 {
     font-size: 36px;
     color: #ffdf00;
     margin-bottom: 12px;
-  }
-  .title-card p {
+}
+.title-card p {
     font-size: 18px;
     color: #ccc;
-  }
-  
-  /* ===== 其他頁面 main ===== */
-  main.dashboard-container,
-  main.map-main,
-  main.feedback-card {
+}
+
+/* ===== 其他頁面 main ===== */
+main.dashboard-container,
+main.map-main,
+main.feedback-card {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -84,15 +84,15 @@ body {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 0.8s forwards;
-  }
-  
-  @keyframes fadeIn {
+}
+
+@keyframes fadeIn {
     to { opacity: 1; transform: translateY(0); }
-  }
-  
-  /* ===== 卡片樣式 ===== */
-  .card,
-  .feedback-card {
+}
+
+/* ===== 卡片樣式 ===== */
+.card,
+.feedback-card {
     width: 300px;
     background: #1f1f1f;
     padding: 20px;
@@ -100,37 +100,37 @@ body {
     border-radius: 12px;
     margin-bottom: 20px;
     transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .card:hover,
-  .feedback-card:hover {
+}
+
+.card:hover,
+.feedback-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 24px rgba(0,0,0,0.6);
-  }
-  
-  .card h2,
-  .feedback-card h1 {
+}
+
+.card h2,
+.feedback-card h1 {
     color: #ffe01b;
     margin-top: 0;
     text-align: center;
-  }
-  
-  .card p,
-  .feedback-card p {
+}
+
+.card p,
+.feedback-card p {
     color: #ccc;
     margin: 6px 0;
     text-align: center;
-  }
-  
-  /* ===== 表單 ===== */
-  .feedback-card form {
+}
+
+/* ===== 表單 ===== */
+.feedback-card form {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 15px;
-  }
-  .feedback-card input,
-  .feedback-card textarea {
+}
+.feedback-card input,
+.feedback-card textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #555;
@@ -138,9 +138,9 @@ body {
     background: #1f1f2f;
     color: #fff;
     box-sizing: border-box;
-  }
-  .feedback-card textarea { min-height: 100px; }
-  .feedback-card button {
+}
+.feedback-card textarea { min-height: 100px; }
+.feedback-card button {
     padding: 12px;
     background-color: #ffdf00;
     color: #222;
@@ -149,29 +149,29 @@ body {
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-  }
-  .feedback-card button:hover {
+}
+.feedback-card button:hover {
     background-color: #ffe733;
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-  }
-  
-  #feedbackResult {
+}
+
+#feedbackResult {
     margin-top: 20px;
     font-weight: bold;
     color: #ffe01b;
     text-align: center;
-  }
-  
-  /* ===== 進度條 ===== */
-  .bar {
+}
+
+/* ===== 進度條 ===== */
+.bar {
     width: 100%;
     background: #353535;
     border-radius: 5px;
     height: 20px;
     margin-top: 5px;
-  }
-  .bar span {
+}
+.bar span {
     display: block;
     height: 100%;
     width: 0%;
@@ -182,24 +182,24 @@ body {
     color: #000;
     background-color: #ffdf00;
     transition: width 0.5s ease, background 0.3s;
-  }
-  .bar span.city { background-color: #1E90FF; }
-  
-  /* ===== 地圖容器 ===== */
-  .map-container {
+}
+.bar span.city { background-color: #1E90FF; }
+
+/* ===== 地圖容器 ===== */
+.map-container {
     position: relative;
     flex: 1;
     max-width: 800px;
     height: 600px;
-  }
-  .map-container img {
+}
+.map-container img {
     width: 100%;
     height: 100%;
     border-radius: 8px;
-  }
-  
-  /* 地圖點 */
-  .area-btn {
+}
+
+/* 地圖點 */
+.area-btn {
     position: absolute;
     width: 25px;
     height: 25px;
@@ -209,15 +209,15 @@ body {
     transform: translate(-50%, -50%);
     z-index: 10;
     transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
-  }
-  .area-btn.rural { background: #FF4136; }
-  .area-btn.city  { background: #1E90FF; }
-  .area-btn.active { transform: translate(-50%, -50%) scale(1.2); }
-  .area-btn.active-click { transform: translate(-50%, -50%) scale(1.4); box-shadow: 0 0 16px rgba(255,255,0,0.8); }
-  .area-btn:hover { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 12px rgba(255,255,255,0.5); }
-  
-  /* 按鈕 */
-  #compareBtn {
+}
+.area-btn.rural { background: #FF4136; }
+.area-btn.city  { background: #1E90FF; }
+.area-btn.active { transform: translate(-50%, -50%) scale(1.2); }
+.area-btn.active-click { transform: translate(-50%, -50%) scale(1.4); box-shadow: 0 0 16px rgba(255,255,0,0.8); }
+.area-btn:hover { transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 12px rgba(255,255,255,0.5); }
+
+/* 按鈕 */
+#compareBtn {
     margin-top: 10px;
     padding: 8px 15px;
     background: #ffdf00;
@@ -226,129 +226,117 @@ body {
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
-  }
-  #compareBtn:hover {
+}
+#compareBtn:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 16px rgba(0,0,0,0.5);
-  }
-  
-  /* ===== 導覽列 ===== */
-  .navbar {
+}
+
+/* ===== 導覽列 ===== */
+.navbar {
     background: #222;
     position: fixed;
     bottom: 0;
     width: 100%;
     z-index: 1000;
-  }
-  .navbar ul {
+}
+.navbar ul {
     display: flex;
     margin: 0;
     padding: 10px;
     list-style: none;
     justify-content: center;
-  }
-  .navbar li a {
+}
+.navbar li a {
     color: #fff;
     text-decoration: none;
     padding: 8px 16px;
     display: block;
     border-radius: 6px;
     transition: background 0.3s, color 0.3s;
-  }
-  .navbar a.active,
-  .navbar li a:hover { background: #444; color: #ffe01b; }
-  
-    html, body {
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
-  
-  .map-main, .map-container, .card {
-    box-sizing: border-box;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-  
-  /* 📱 手機時導覽列仍維持橫向 */
-  @media (max-width: 600px) {
-    .navbar {
-      flex-direction: row;
-    }
-  
-    .navbar ul {
-      flex-direction: row;
-      justify-content: space-around;
-      width: 100%;
-    }
-  
-    .navbar li {
-      flex: 1;
-      text-align: center;
-    }
-  }
+}
+.navbar a.active,
+.navbar li a:hover { background: #444; color: #ffe01b; }
+
+/* 全域 overflow 修正 */
 html, body {
-    margin: 0;
-    padding: 0;
     overflow-x: hidden !important;
     width: 100%;
     max-width: 100vw;
-  }
-  
-  .map-main {
-    display: flex;
-    flex-wrap: wrap; 
-    width: 100%;
-    max-width: 100vw;
-    overflow: hidden;
+}
+
+/* 通用 RWD 修正 */
+.map-main, .map-container, .card {
     box-sizing: border-box;
-  }
-  
-  .map-container {
-    position: relative;
-    width: 100%;
     max-width: 100%;
-    overflow: hidden;
-  }
-  
-  .map-container img {
+    overflow-x: hidden;
+}
+.map-container img {
     width: 100%;
     height: auto;
-    max-width: 100%;
     display: block;
-  }
-  
-  .area-btn {
-    position: absolute;
-    transform: translate(-50%, -50%);
+}
+.area-btn {
     max-width: 100%;
     max-height: 100%;
-  }
-  .contact-email {
+}
+.contact-email {
     word-break: break-all; 
     overflow-wrap: break-word;
-  }
-  
-  
-  /* 📱 手機導覽列保持橫向 */
-  @media (max-width: 600px) {
+}
+
+/* 📱 手機導覽列保持橫向 */
+@media (max-width: 600px) {
     .navbar {
-      display: flex;
-      justify-content: center;
+        display: flex;
+        justify-content: center;
     }
-  
     .navbar ul {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      width: 100%;
-      padding: 0;
-      margin: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 0;
+        margin: 0;
     }
-  
     .navbar li {
-      flex: 1;
-      text-align: center;
+        flex: 1;
+        text-align: center;
     }
-  }
-  
-  
+}
+
+/* ===== 資料比較頁 (data.html) 專用 ===== */
+main.data-main {
+    flex: none; /* 關閉父層 flex 伸展 */
+    display: block;
+    width: 100%;
+    max-width: 900px;
+    margin: 80px auto 100px auto; /* 預留上方與底部空間 */
+    padding: 20px;
+    background: rgba(46, 46, 63, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    text-align: center;
+    box-sizing: border-box;
+}
+.data-main h2 {
+    color: #ffe01b;
+    margin-bottom: 20px;
+}
+.chart-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+body {
+    padding-bottom: 80px; /* 預留底部空間給 navbar */
+}
+@media (max-width: 600px) {
+    main.data-main {
+        margin: 60px auto 90px auto;
+        padding: 15px;
+    }
+    .data-main h2 {
+        font-size: 1.1rem;
+    }
+}
