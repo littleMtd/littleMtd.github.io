@@ -56,7 +56,8 @@ const schools = {
   }
   
   function displaySchoolData(county) {
-    dataPanel.innerHTML = "";
+    const dataPanel = document.getElementById("dataPanel");
+    dataPanel.innerHTML = ""; // 更新內容;
   
     function createInfoCard(school, labelClass = "") {
       const div = document.createElement("div");

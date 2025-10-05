@@ -331,6 +331,10 @@ main.data-main {
 body {
     padding-bottom: 80px; /* 預留底部空間給 navbar */
 }
+#dataPanel {
+    min-height: 220px;
+    opacity: 0.6; /* 顯示但資料淡化 */
+}
 @media (max-width: 600px) {
     main.data-main {
         margin: 60px auto 90px auto;
